@@ -15,6 +15,10 @@ public class Adyacencia {
   public Adyacencia(Vertice vertice) {
     this.vertice = vertice;
     this.costo = new double[7];
+
+    for (int i = 0; i < 7; i++) {
+      costo[i] = Double.MAX_VALUE;
+    }
   }
 
   public void setCosto(double costo, Dias dia) {
