@@ -38,16 +38,16 @@ public class Grafo {
     }
   }
 
-  public void mostrarAdyacencias() {
-    System.out.println("Grafo: " + nombre);
+  public void mostrarListaAdyacencias(int dia) throws Exception {
+    System.out.println("Lista de adyacencias: ");
     for (String key : vertices.keySet()) {
-      Vertice vertex = vertices.get(key);
-      System.out.println(vertex + " {");
-      for (String keyAdy : vertex.getAdyacencias().keySet()) {
-        Vertice v = vertex.getAdyacencias().get(keyAdy).getVertice();
-        System.out.println("   " + v);
+      Vertice vertice = vertices.get(key);
+      System.out.print(vertice + " " + vertice.getEtiqueta() + " -> {");
+      for (String k : vertice.getAdyacencias().keySet()) {
+        Adyacencia adyacencia = vertice.getAdyacencias().get(k);
+        System.out.print(adyacencia.stringyfy(dia) + ", ");
       }
-      System.out.println("}");
+      System.out.println("})");
     }
   }
 
@@ -114,15 +114,15 @@ public class Grafo {
     System.out.println("}");
   }
 
-  public void caminoMasCorto(Vertice inicio, int dia) throws Exception {
+  public void generarCaminoMasCorto(Vertice destino, int dia) throws Exception {
     if (dia < 0 || dia > 6)
       throw new Exception("Día inválido");
 
     Queue<Vertice> queue = new LinkedList<>();
     Set<Vertice> visited = new HashSet<>();
-    visited.add(inicio);
-    inicio.setEtiqueta(new Etiqueta(null, 0));
-    queue.add(inicio);
+    visited.add(destino);
+    destino.setEtiqueta(new Etiqueta(null, 0));
+    queue.add(destino);
 
     Vertice actual = null;
     while (!queue.isEmpty()) {
@@ -140,7 +140,6 @@ public class Grafo {
           a.getVertice().setEtiqueta(nueva);
         }
       }
-
     }
   }
 }

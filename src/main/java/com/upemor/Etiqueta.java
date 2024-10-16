@@ -24,4 +24,9 @@ public class Etiqueta {
   public void setCosto(double costo) {
     this.costo = costo;
   }
+
+  @Override
+  public String toString() {
+    return "[" + vertice + "," + costo + "]";
+  }
 }
