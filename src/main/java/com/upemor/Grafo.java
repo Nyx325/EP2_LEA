@@ -38,7 +38,7 @@ public class Grafo {
     }
   }
 
-  public void mostrarListaAdyacencias(int dia) throws Exception {
+  public void mostrarListaAdyacencias(Dias dia) {
     System.out.println("Lista de adyacencias: ");
     for (String key : vertices.keySet()) {
       Vertice vertice = vertices.get(key);
@@ -114,9 +114,7 @@ public class Grafo {
     System.out.println("}");
   }
 
-  public void generarCaminoMasCorto(Vertice destino, int dia) throws Exception {
-    if (dia < 0 || dia > 6)
-      throw new Exception("Día inválido");
+  public void generarCaminoMasCorto(Vertice destino, Dias dia) {
 
     Queue<Vertice> queue = new LinkedList<>();
     Set<Vertice> visited = new HashSet<>();

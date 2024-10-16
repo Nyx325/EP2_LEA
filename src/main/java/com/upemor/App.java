@@ -10,23 +10,35 @@ public class App {
     Vertice v4 = new Vertice("4");
     Vertice v5 = new Vertice("5");
 
-    try {
-      v1.addAdyacencias(new Adyacencia(v2, 1, Adyacencia.LUNES), new Adyacencia(v4, 1, Adyacencia.LUNES));
-      v2.addAdyacencias(new Adyacencia(v1, 1, Adyacencia.LUNES), new Adyacencia(v3, 1, Adyacencia.LUNES),
-          new Adyacencia(v4, 1, Adyacencia.LUNES));
-      v3.addAdyacencias(new Adyacencia(v4, 1, 0), new Adyacencia(v2, 1, 0), new Adyacencia(v5, 1, 0));
-      v4.addAdyacencias(new Adyacencia(v1, 1, 0), new Adyacencia(v2, 1, 0), new Adyacencia(v3, 1, 0),
-          new Adyacencia(v5, 1, 0));
-      v5.addAdyacencias(new Adyacencia(v4, 1, 0), new Adyacencia(v3, 1, 0));
+    v1.addAdyacencias(
+        new Adyacencia(v2, 1, Dias.LUNES),
+        new Adyacencia(v4, 1, Dias.LUNES));
 
-      Grafo grafo = new Grafo("Grafinator, the last one");
-      grafo.addAll(v1, v2, v3, v4, v5);
+    v2.addAdyacencias(
+        new Adyacencia(v1, 1, Dias.LUNES),
+        new Adyacencia(v3, 1, Dias.LUNES),
+        new Adyacencia(v4, 1, Dias.LUNES));
 
-      grafo.mostrarListaAdyacencias(Adyacencia.LUNES);
-      grafo.generarCaminoMasCorto(v3, Adyacencia.LUNES);
-      grafo.mostrarListaAdyacencias(Adyacencia.LUNES);
-    } catch (Exception e) {
-      System.out.println(e.toString());
-    }
+    v3.addAdyacencias(
+        new Adyacencia(v4, 1, Dias.LUNES),
+        new Adyacencia(v2, 1, Dias.LUNES),
+        new Adyacencia(v5, 1, Dias.LUNES));
+
+    v4.addAdyacencias(
+        new Adyacencia(v1, 1, Dias.LUNES),
+        new Adyacencia(v2, 1, Dias.LUNES),
+        new Adyacencia(v3, 1, Dias.LUNES),
+        new Adyacencia(v5, 1, Dias.LUNES));
+
+    v5.addAdyacencias(
+        new Adyacencia(v4, 1, Dias.LUNES),
+        new Adyacencia(v3, 1, Dias.LUNES));
+
+    Grafo grafo = new Grafo("Grafinator, the last one");
+    grafo.addAll(v1, v2, v3, v4, v5);
+
+    grafo.mostrarListaAdyacencias(Dias.LUNES);
+    grafo.generarCaminoMasCorto(v3, Dias.LUNES);
+    grafo.mostrarListaAdyacencias(Dias.LUNES);
   }
 }

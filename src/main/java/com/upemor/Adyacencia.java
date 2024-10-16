@@ -12,25 +12,18 @@ public class Adyacencia {
   public static final int SABADO = 5;
   public static final int DOMINGO = 6;
 
-  public Adyacencia(Vertice vertice, double costo, int dia) throws Exception {
-    if (dia < 0 || dia > 6)
-      throw new Exception("Día inválido");
-
+  public Adyacencia(Vertice vertice, double costo, Dias dia) {
     this.vertice = vertice;
     this.costo = new double[7];
-    this.costo[dia] = costo;
+    this.costo[dia.getValue()] = costo;
   }
 
-  public void setCosto(double costo, int dia) throws Exception {
-    if (dia < 0 || dia > 6)
-      throw new Exception("Dia inválido");
-    this.costo[dia] = costo;
+  public void setCosto(double costo, Dias dia) {
+    this.costo[dia.getValue()] = costo;
   }
 
-  public double getCosto(int dia) throws Exception {
-    if (dia < 0 || dia > 6)
-      throw new Exception("Dia inválido");
-    return costo[dia];
+  public double getCosto(Dias dia) {
+    return costo[dia.getValue()];
   }
 
   public void setVertice(Vertice vertice) {
@@ -41,11 +34,7 @@ public class Adyacencia {
     return vertice;
   }
 
-  public String stringyfy(int dia) throws Exception {
-    if (dia < 0 || dia > 6)
-      throw new Exception("Día inválido");
-
-    String[] dias = { "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado", "Domingo" };
-    return "[" + vertice + "," + costo[dia] + "," + dias[dia] + "]";
+  public String stringyfy(Dias dia) {
+    return "[" + vertice + "," + costo[dia.getValue()] + "," + dia + "]";
   }
 }
