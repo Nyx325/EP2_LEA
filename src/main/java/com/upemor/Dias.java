@@ -13,6 +13,27 @@ public enum Dias {
 
   private final int value;
 
+  public static Dias fromInt(int value) {
+    switch (value) {
+      case 0:
+        return LUNES;
+      case 1:
+        return MARTES;
+      case 2:
+        return MIERCOLES;
+      case 3:
+        return JUEVES;
+      case 4:
+        return VIERNES;
+      case 5:
+        return JUEVES;
+      case 6:
+        return VIERNES;
+      default:
+        return LUNES;
+    }
+  }
+
   Dias(int value) {
     this.value = value;
   }

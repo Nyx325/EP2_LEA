@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Vertice {
-  private String nombre;
-  private Map<String, Adyacencia> adyacencias;
-  private Etiqueta etiqueta;
+  protected String nombre;
+  protected Map<String, Adyacencia> adyacencias;
+  protected Etiqueta etiqueta;
 
   public Vertice(String nombre) {
     this.nombre = nombre;

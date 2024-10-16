@@ -1,6 +1,8 @@
 package com.upemor;
 
 public class App {
+  Grafo grafo;
+
   public static void main(String[] args) {
     System.out.println("Hello World!");
 
