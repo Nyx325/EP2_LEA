@@ -20,6 +20,6 @@ public class Ciudad extends Vertice {
 
   @Override
   public String toString() {
-    return id + ":" + nombre;
+    return nombre;
   }
 }

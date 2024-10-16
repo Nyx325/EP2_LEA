@@ -16,21 +16,21 @@ public enum Dias {
   public static Dias fromInt(int value) {
     switch (value) {
       case 0:
-        return LUNES;
+        return Dias.LUNES;
       case 1:
-        return MARTES;
+        return Dias.MARTES;
       case 2:
-        return MIERCOLES;
+        return Dias.MIERCOLES;
       case 3:
-        return JUEVES;
+        return Dias.JUEVES;
       case 4:
-        return VIERNES;
+        return Dias.VIERNES;
       case 5:
-        return JUEVES;
+        return Dias.SABADO;
       case 6:
-        return VIERNES;
+        return Dias.DOMINGO;
       default:
-        return LUNES;
+        return Dias.LUNES;
     }
   }
 

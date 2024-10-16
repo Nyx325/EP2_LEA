@@ -1,46 +1,96 @@
 package com.upemor;
 
-public class App {
-  Grafo grafo;
+import java.io.File;
+import java.nio.file.Files;
+import java.util.List;
+
+public class App extends VistaConsola {
+  public Grafo grafo;
+
+  public void menu() {
+    int opc;
+    do {
+      System.out.println("Bienvenido");
+      System.out.println("0) Salir");
+      System.out.println("1) Importar grafo");
+      opc = (int) capturarLong("Ingresa una opción");
+
+      try {
+        switch (opc) {
+          case 0:
+            return;
+          case 1:
+            this.importarGrafo();
+            break;
+
+          default:
+            break;
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+        System.out.println("Error: " + e.toString());
+      }
+
+    } while (true);
+  }
+
+  public void importarGrafo() throws Exception {
+    String ruta = capturarString("Ingresa la ruta de tu archivo");
+    File archivo = new File(ruta);
+    List<String> lineas = Files.readAllLines(archivo.toPath());
+
+    grafo = new Grafo("Grafo");
+
+    boolean primerLinea = true;
+    for (String linea : lineas) {
+      if (primerLinea) {
+        String[] ciudades = linea.split(",");
+        for (String ciudad : ciudades) {
+          Ciudad c = new Ciudad(ciudad);
+          grafo.add(c);
+        }
+
+        primerLinea = false;
+        continue;
+      }
+
+      String[] adyacencias = linea.split(";");
+
+      Vertice ciudad = grafo.getVertices().get(adyacencias[0]);
+      if (ciudad == null)
+        continue;
+
+      for (int i = 1; i < adyacencias.length; i++) {
+        String[] inserteNombreVar = adyacencias[i].split(",");
+        Vertice ciudadAdy = grafo.getVertices().get(inserteNombreVar[0]);
+
+        if (ciudadAdy == null)
+          continue;
+
+        Adyacencia ady = new Adyacencia(ciudadAdy);
+        for (int j = 1; j < inserteNombreVar.length; j++) {
+          double costo;
+          try {
+            costo = Double.parseDouble(inserteNombreVar[j]);
+          } catch (NumberFormatException e) {
+            costo = Integer.MAX_VALUE;
+            System.out.println("Error al convertir el peso: " + inserteNombreVar[j] + " colocnado peso: " + costo);
+          }
+          Dias d = Dias.fromInt(j - 1);
+          ady.setCosto(costo, d);
+        }
+        ciudad.addAdyacencia(ady);
+      }
+    }
+
+    for (Dias dia : Dias.values()) {
+    grafo.mostrarListaAdyacencias(dia);
+    }
+
+  }
 
   public static void main(String[] args) {
-    System.out.println("Hello World!");
-
-    Vertice v1 = new Vertice("1");
-    Vertice v2 = new Vertice("2");
-    Vertice v3 = new Vertice("3");
-    Vertice v4 = new Vertice("4");
-    Vertice v5 = new Vertice("5");
-
-    v1.addAdyacencias(
-        new Adyacencia(v2, 1, Dias.LUNES),
-        new Adyacencia(v4, 1, Dias.LUNES));
-
-    v2.addAdyacencias(
-        new Adyacencia(v1, 1, Dias.LUNES),
-        new Adyacencia(v3, 1, Dias.LUNES),
-        new Adyacencia(v4, 1, Dias.LUNES));
-
-    v3.addAdyacencias(
-        new Adyacencia(v4, 1, Dias.LUNES),
-        new Adyacencia(v2, 1, Dias.LUNES),
-        new Adyacencia(v5, 1, Dias.LUNES));
-
-    v4.addAdyacencias(
-        new Adyacencia(v1, 1, Dias.LUNES),
-        new Adyacencia(v2, 1, Dias.LUNES),
-        new Adyacencia(v3, 1, Dias.LUNES),
-        new Adyacencia(v5, 1, Dias.LUNES));
-
-    v5.addAdyacencias(
-        new Adyacencia(v4, 1, Dias.LUNES),
-        new Adyacencia(v3, 1, Dias.LUNES));
-
-    Grafo grafo = new Grafo("Grafinator, the last one");
-    grafo.addAll(v1, v2, v3, v4, v5);
-
-    grafo.mostrarListaAdyacencias(Dias.LUNES);
-    grafo.generarCaminoMasCorto(v3, Dias.LUNES);
-    grafo.mostrarListaAdyacencias(Dias.LUNES);
+    App app = new App();
+    app.menu();
   }
 }

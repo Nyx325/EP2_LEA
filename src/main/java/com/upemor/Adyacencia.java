@@ -12,10 +12,9 @@ public class Adyacencia {
   public static final int SABADO = 5;
   public static final int DOMINGO = 6;
 
-  public Adyacencia(Vertice vertice, double costo, Dias dia) {
+  public Adyacencia(Vertice vertice) {
     this.vertice = vertice;
     this.costo = new double[7];
-    this.costo[dia.getValue()] = costo;
   }
 
   public void setCosto(double costo, Dias dia) {
@@ -36,5 +35,22 @@ public class Adyacencia {
 
   public String stringyfy(Dias dia) {
     return "[" + vertice + "," + costo[dia.getValue()] + "," + dia + "]";
+  }
+
+  public String toString(Dias dia) {
+    return "[" + vertice + "," + costo[dia.getValue()] + "]";
+  }
+
+  public String toString() {
+    StringBuilder str = new StringBuilder();
+    str.append("[");
+    str.append(vertice);
+    str.append(",");
+    str.append("(");
+    for (Dias d : Dias.values()) {
+      str.append(costo[d.getValue()] + " ");
+    }
+    str.append(")]");
+    return str.toString();
   }
 }

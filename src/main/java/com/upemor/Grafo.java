@@ -17,6 +17,18 @@ public class Grafo {
     this.vertices = new HashMap<>();
   }
 
+  public String getNombre() {
+    return nombre;
+  }
+
+  public void setNombre(String nombre) {
+    this.nombre = nombre;
+  }
+
+  public Map<String, Vertice> getVertices() {
+    return vertices;
+  }
+
   public void add(Vertice v) {
     vertices.put(v.getNombre(), v);
   }
@@ -39,16 +51,17 @@ public class Grafo {
   }
 
   public void mostrarListaAdyacencias(Dias dia) {
-    System.out.println("Lista de adyacencias: ");
+    System.out.println("\nLista de adyacencias dia " + dia);
     for (String key : vertices.keySet()) {
       Vertice vertice = vertices.get(key);
       System.out.print(vertice + " " + vertice.getEtiqueta() + " -> {");
       for (String k : vertice.getAdyacencias().keySet()) {
         Adyacencia adyacencia = vertice.getAdyacencias().get(k);
-        System.out.print(adyacencia.stringyfy(dia) + ", ");
+        System.out.print(adyacencia.toString(dia) + ", ");
       }
       System.out.println("})");
     }
+    System.out.println("\n");
   }
 
   public void recorridoEnAnchura(Vertice inicio) {

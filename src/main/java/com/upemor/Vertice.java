@@ -26,12 +26,6 @@ public class Vertice {
     this.adyacencias.put(ady.getVertice().nombre, ady);
   }
 
-  public void addAdyacencias(Adyacencia... adys) {
-    for (Adyacencia adyacencia : adys) {
-      this.addAdyacencia(adyacencia);
-    }
-  }
-
   public Map<String, Adyacencia> getAdyacencias() {
     return adyacencias;
   }
