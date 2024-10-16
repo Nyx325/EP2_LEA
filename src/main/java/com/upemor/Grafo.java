@@ -119,7 +119,7 @@ public class Grafo {
     Queue<Vertice> queue = new LinkedList<>();
     Set<Vertice> visited = new HashSet<>();
     visited.add(destino);
-    destino.setEtiqueta(new Etiqueta(null, 0));
+    destino.setEtiqueta(new Etiqueta(null, 0, dia));
     queue.add(destino);
 
     Vertice actual = null;
@@ -128,7 +128,7 @@ public class Grafo {
 
       for (String key : actual.getAdyacencias().keySet()) {
         Adyacencia a = actual.getAdyacencias().get(key);
-        Etiqueta nueva = new Etiqueta(actual, actual.getEtiqueta().getCosto() + a.getCosto(dia));
+        Etiqueta nueva = new Etiqueta(actual, actual.getEtiqueta().getCosto() + a.getCosto(dia), dia);
         if (!visited.contains(a.getVertice())) {
           visited.add(a.getVertice());
           a.getVertice().setEtiqueta(nueva);

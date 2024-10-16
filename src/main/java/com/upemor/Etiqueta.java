@@ -3,10 +3,12 @@ package com.upemor;
 public class Etiqueta {
   private Vertice vertice;
   private double costo;
+  private Dias dia;
 
-  public Etiqueta(Vertice vertice, double costo) {
+  public Etiqueta(Vertice vertice, double costo, Dias dia) {
     this.vertice = vertice;
     this.costo = costo;
+    this.dia = dia;
   }
 
   public Vertice getVertice() {
@@ -27,6 +29,6 @@ public class Etiqueta {
 
   @Override
   public String toString() {
-    return "[" + vertice + "," + costo + "]";
+    return "[" + vertice + "," + costo + "," + dia + "]";
   }
 }
