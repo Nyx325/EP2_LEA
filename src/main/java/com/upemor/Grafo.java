@@ -113,4 +113,34 @@ public class Grafo {
     }
     System.out.println("}");
   }
+
+  public void caminoMasCorto(Vertice inicio, int dia) throws Exception {
+    if (dia < 0 || dia > 6)
+      throw new Exception("Día inválido");
+
+    Queue<Vertice> queue = new LinkedList<>();
+    Set<Vertice> visited = new HashSet<>();
+    visited.add(inicio);
+    inicio.setEtiqueta(new Etiqueta(null, 0));
+    queue.add(inicio);
+
+    Vertice actual = null;
+    while (!queue.isEmpty()) {
+      actual = queue.poll();
+
+      for (String key : actual.getAdyacencias().keySet()) {
+        Adyacencia a = actual.getAdyacencias().get(key);
+        Etiqueta nueva = new Etiqueta(actual, actual.getEtiqueta().getCosto() + a.getCosto(dia));
+        if (!visited.contains(a.getVertice())) {
+          visited.add(a.getVertice());
+          a.getVertice().setEtiqueta(nueva);
+          queue.add(a.getVertice());
+        }
+        if (nueva.getCosto() < a.getVertice().getEtiqueta().getCosto()) {
+          a.getVertice().setEtiqueta(nueva);
+        }
+      }
+
+    }
+  }
 }
