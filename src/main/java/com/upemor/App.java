@@ -84,9 +84,8 @@ public class App extends VistaConsola {
     }
 
     for (Dias dia : Dias.values()) {
-    grafo.mostrarListaAdyacencias(dia);
+      grafo.mostrarListaAdyacencias(dia);
     }
-
   }
 
   public static void main(String[] args) {
