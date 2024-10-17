@@ -67,79 +67,6 @@ public class Grafo {
     System.out.println("\n");
   }
 
-  public void recorridoEnAnchura(Vertice inicio, boolean porDerecha) {
-    Queue<Vertice> queue = new LinkedList<>();
-    Set<Vertice> visited = new HashSet<>();
-
-    Vertice startVertice = inicio;
-    if (startVertice == null) {
-      System.out.println("Vértice de inicio no encontrado.");
-      return;
-    }
-
-    System.out.print(
-        "Recorrido en anchura empezando por: " + startVertice.getNombre() + " {");
-
-    queue.add(inicio);
-    visited.add(inicio);
-
-    while (!queue.isEmpty()) {
-      Vertice current = queue.poll();
-      System.out.print(" " + current.getNombre());
-
-      List<String> adyacencias = new ArrayList<>(current.getAdyacencias().keySet());
-
-      if (!porDerecha)
-        Collections.reverse(adyacencias);
-      ;
-      for (String key : adyacencias) {
-        Vertice neighbor = current.getAdyacencias().get(key).getVertice();
-        if (!visited.contains(neighbor)) {
-          visited.add(neighbor);
-          queue.add(neighbor);
-        }
-      }
-    }
-    System.out.println("}");
-  }
-
-  public void recorridoEnProfundidad(Vertice inicio, boolean porDerecha) {
-    Stack<Vertice> stack = new Stack<>();
-    Set<Vertice> visited = new HashSet<>();
-
-    Vertice startVertice = inicio;
-
-    if (startVertice == null) {
-      System.out.println("Vértice de inicio no encontrado.");
-      return;
-    }
-
-    System.out.print("Recorrido en profundidad empezando por: " +
-        startVertice.getNombre() + " {");
-
-    stack.add(inicio);
-    visited.add(inicio);
-
-    while (!stack.isEmpty()) {
-      Vertice current = stack.pop();
-      System.out.print(" " + current.getNombre());
-
-      List<String> adyacencias = new ArrayList<>(current.getAdyacencias().keySet());
-
-      if (!porDerecha)
-        Collections.reverse(adyacencias);
-
-      for (String key : adyacencias) {
-        Vertice neighbor = current.getAdyacencias().get(key).getVertice();
-        if (!visited.contains(neighbor)) {
-          visited.add(neighbor);
-          stack.add(neighbor);
-        }
-      }
-    }
-    System.out.println("}");
-  }
-
   public void generarCaminoMasCorto(Vertice destino, Dias dia) {
 
     Queue<Vertice> queue = new LinkedList<>();
@@ -165,5 +92,57 @@ public class Grafo {
         }
       }
     }
+  }
+
+  public static final String ANCHURA = "anchura";
+  public static final String PROFUNDIDAD = "profundidad";
+  public static final String DERECHA = "derecha";
+  public static final String IZQUIERDA = "izquierda";
+
+  public void recorrido(Vertice inicio, String tipo, String direccion) {
+    if (inicio == null) {
+      System.out.println("Vértice de inicio no encontrado.");
+      return;
+    }
+
+    if (!tipo.equals(ANCHURA) && !tipo.equals(PROFUNDIDAD)) {
+      System.out.println("Error: Tipo inválido");
+      return;
+    }
+
+    if (!direccion.equals(DERECHA) && !direccion.equals(IZQUIERDA)) {
+      System.out.println("Error: Dirección inválido");
+      return;
+    }
+
+    Set<Vertice> visitados = new HashSet<>();
+    VerticesPendientes pendientes;
+    if (tipo.equals(ANCHURA))
+      pendientes = new Cola();
+    else
+      pendientes = new Pila();
+
+    System.out.print("Recorrido en " + tipo + " por " + direccion + ": {");
+    pendientes.agregar(inicio);
+    visitados.add(inicio);
+
+    while (!pendientes.vacio()) {
+      Vertice actual = pendientes.obtener();
+      System.out.print(" " + actual.getNombre());
+
+      List<String> adyacencias = new ArrayList<>(actual.getAdyacencias().keySet());
+
+      if (direccion.equals(IZQUIERDA))
+        Collections.reverse(adyacencias);
+
+      for (String key : adyacencias) {
+        Vertice vecino = actual.getAdyacencias().get(key).getVertice();
+        if (!visitados.contains(vecino)) {
+          visitados.add(vecino);
+          pendientes.agregar(vecino);
+        }
+      }
+    }
+    System.out.println("}");
   }
 }

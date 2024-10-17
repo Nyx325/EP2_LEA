@@ -138,10 +138,10 @@ public class App extends VistaConsola {
 
       switch (opc) {
         case 0:
-          grafo.recorridoEnAnchura(inicio, true);
+          grafo.recorrido(inicio, Grafo.ANCHURA, Grafo.DERECHA);
           break;
         case 1:
-          grafo.recorridoEnAnchura(inicio, false);
+          grafo.recorrido(inicio, Grafo.ANCHURA, Grafo.IZQUIERDA);
           break;
 
         default:
@@ -185,10 +185,10 @@ public class App extends VistaConsola {
 
       switch (opc) {
         case 0:
-          grafo.recorridoEnProfundidad(inicio, true);
+          grafo.recorrido(inicio, Grafo.PROFUNDIDAD, Grafo.DERECHA);
           break;
         case 1:
-          grafo.recorridoEnProfundidad(inicio, false);
+          grafo.recorrido(inicio, Grafo.PROFUNDIDAD, Grafo.IZQUIERDA);
           break;
 
         default:
