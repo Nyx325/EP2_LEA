@@ -23,6 +23,8 @@ public class App extends VistaConsola {
       System.out.println("0) Salir");
       System.out.println("1) Importar grafo");
       System.out.println("2) Recorrido en anchura");
+      System.out.println("3) Recorrido en profundidad");
+      System.out.println("4) Camino más corto");
       opc = (int) capturarLong("Ingresa una opción");
 
       try {
@@ -37,6 +39,8 @@ public class App extends VistaConsola {
             break;
           case 3:
             this.recorridoEnProfundidad();
+            break;
+          case 4:
             break;
 
           default:
@@ -189,6 +193,53 @@ public class App extends VistaConsola {
           break;
         case 1:
           grafo.recorrido(inicio, Grafo.PROFUNDIDAD, Grafo.IZQUIERDA);
+          break;
+
+        default:
+          System.out.println("Opción no válida");
+          break;
+      }
+    } while (true);
+  }
+
+  public void caminoMasCortoAnchura() {
+    String nodoInicial;
+    Vertice inicio;
+    int opc;
+    do {
+      System.out.println("0) Volver al menú");
+      System.out.println("1) Ingresar nodo inicial");
+      opc = (int) capturarLong("Ingresa una opción");
+
+      switch (opc) {
+        case 0:
+          return;
+        case 1:
+          nodoInicial = capturarString("Ingresa el nodo inicial");
+          break;
+        default:
+          System.out.println("Opción no válida");
+          continue;
+      }
+
+      inicio = grafo.getVertices().get(nodoInicial);
+
+      if (inicio == null) {
+        System.out.println("No se encontró el nodo " + nodoInicial);
+        continue;
+      }
+
+      System.out.println("Elije un tipo de recorrido en anchura");
+      System.out.println("0) Por derecha");
+      System.out.println("1) Por izquierda");
+      opc = (int) capturarLong("Ingresa una opción");
+
+      switch (opc) {
+        case 0:
+          grafo.recorrido(inicio, Grafo.ANCHURA, Grafo.DERECHA);
+          break;
+        case 1:
+          grafo.recorrido(inicio, Grafo.ANCHURA, Grafo.IZQUIERDA);
           break;
 
         default:

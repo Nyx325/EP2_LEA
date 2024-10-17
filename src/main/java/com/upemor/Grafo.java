@@ -145,4 +145,56 @@ public class Grafo {
     }
     System.out.println("}");
   }
+
+  public void caminoMasCorto(Vertice destino, Dias dia, String tipo, String direccion) {
+    if (destino == null) {
+      System.out.println("Vértice de inicio no encontrado.");
+      return;
+    }
+
+    if (!tipo.equals(ANCHURA) && !tipo.equals(PROFUNDIDAD)) {
+      System.out.println("Error: Tipo inválido");
+      return;
+    }
+
+    if (!direccion.equals(DERECHA) && !direccion.equals(IZQUIERDA)) {
+      System.out.println("Error: Dirección inválido");
+      return;
+    }
+
+    Set<Vertice> visitados = new HashSet<>();
+    VerticesPendientes pendientes;
+    if (tipo.equals(ANCHURA))
+      pendientes = new Cola();
+    else
+      pendientes = new Pila();
+
+    System.out.print("Recorrido en " + tipo + " por " + direccion + ": {");
+    pendientes.agregar(destino);
+    visitados.add(destino);
+
+    while (!pendientes.vacio()) {
+      Vertice actual = pendientes.obtener();
+      System.out.print(" " + actual.getNombre());
+
+      List<String> adyacencias = new ArrayList<>(actual.getAdyacencias().keySet());
+
+      if (direccion.equals(IZQUIERDA))
+        Collections.reverse(adyacencias);
+
+      for (String key : adyacencias) {
+        Adyacencia a = actual.getAdyacencias().get(key);
+        Etiqueta nueva = new Etiqueta(actual, actual.getEtiqueta().getCosto() + a.getCosto(dia), dia);
+        if (!visitados.contains(a.getVertice())) {
+          visitados.add(a.getVertice());
+          a.getVertice().setEtiqueta(nueva);
+          pendientes.agregar(a.getVertice());
+        }
+        if (nueva.getCosto() < a.getVertice().getEtiqueta().getCosto()) {
+          a.getVertice().setEtiqueta(nueva);
+        }
+      }
+    }
+    System.out.println("}");
+  }
 }
