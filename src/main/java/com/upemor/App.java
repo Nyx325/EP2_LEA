@@ -35,6 +35,9 @@ public class App extends VistaConsola {
           case 2:
             this.recorridoEnAnchura();
             break;
+          case 3:
+            this.recorridoEnProfundidad();
+            break;
 
           default:
             break;
@@ -148,4 +151,50 @@ public class App extends VistaConsola {
     } while (true);
   }
 
+  public void recorridoEnProfundidad() {
+    String nodoInicial;
+    Vertice inicio;
+    int opc;
+    do {
+      System.out.println("0) Volver al menú");
+      System.out.println("1) Ingresar nodo inicial");
+      opc = (int) capturarLong("Ingresa una opción");
+
+      switch (opc) {
+        case 0:
+          return;
+        case 1:
+          nodoInicial = capturarString("Ingresa el nodo inicial");
+          break;
+        default:
+          System.out.println("Opción no válida");
+          continue;
+      }
+
+      inicio = grafo.getVertices().get(nodoInicial);
+
+      if (inicio == null) {
+        System.out.println("No se encontró el nodo " + nodoInicial);
+        continue;
+      }
+
+      System.out.println("Elije un tipo de recorrido en anchura");
+      System.out.println("0) Por derecha");
+      System.out.println("1) Por izquierda");
+      opc = (int) capturarLong("Ingresa una opción");
+
+      switch (opc) {
+        case 0:
+          grafo.recorridoEnProfundidad(inicio, true);
+          break;
+        case 1:
+          grafo.recorridoEnProfundidad(inicio, false);
+          break;
+
+        default:
+          System.out.println("Opción no válida");
+          break;
+      }
+    } while (true);
+  }
 }
