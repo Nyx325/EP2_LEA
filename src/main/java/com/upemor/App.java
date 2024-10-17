@@ -7,12 +7,22 @@ import java.util.List;
 public class App extends VistaConsola {
   public Grafo grafo;
 
+  public static void main(String[] args) {
+    App app = new App();
+    app.menu();
+  }
+
+  public App() {
+    grafo = new Grafo("Grafo");
+  }
+
   public void menu() {
     int opc;
     do {
       System.out.println("Bienvenido");
       System.out.println("0) Salir");
       System.out.println("1) Importar grafo");
+      System.out.println("2) Recorrido en anchura");
       opc = (int) capturarLong("Ingresa una opción");
 
       try {
@@ -21,6 +31,9 @@ public class App extends VistaConsola {
             return;
           case 1:
             this.importarGrafo();
+            break;
+          case 2:
+            this.recorridoEnAnchura();
             break;
 
           default:
@@ -88,8 +101,51 @@ public class App extends VistaConsola {
     }
   }
 
-  public static void main(String[] args) {
-    App app = new App();
-    app.menu();
+  public void recorridoEnAnchura() {
+    String nodoInicial;
+    Vertice inicio;
+    int opc;
+    do {
+      System.out.println("0) Volver al menú");
+      System.out.println("1) Ingresar nodo inicial");
+      opc = (int) capturarLong("Ingresa una opción");
+
+      switch (opc) {
+        case 0:
+          return;
+        case 1:
+          nodoInicial = capturarString("Ingresa el nodo inicial");
+          break;
+        default:
+          System.out.println("Opción no válida");
+          continue;
+      }
+
+      inicio = grafo.getVertices().get(nodoInicial);
+
+      if (inicio == null) {
+        System.out.println("No se encontró el nodo " + nodoInicial);
+        continue;
+      }
+
+      System.out.println("Elije un tipo de recorrido en anchura");
+      System.out.println("0) Por derecha");
+      System.out.println("1) Por izquierda");
+      opc = (int) capturarLong("Ingresa una opción");
+
+      switch (opc) {
+        case 0:
+          grafo.recorridoEnAnchura(inicio, true);
+          break;
+        case 1:
+          grafo.recorridoEnAnchura(inicio, false);
+          break;
+
+        default:
+          System.out.println("Opción no válida");
+          break;
+      }
+    } while (true);
   }
+
 }

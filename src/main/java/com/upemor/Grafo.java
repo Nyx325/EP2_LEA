@@ -1,8 +1,11 @@
 package com.upemor;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
@@ -64,7 +67,7 @@ public class Grafo {
     System.out.println("\n");
   }
 
-  public void recorridoEnAnchura(Vertice inicio) {
+  public void recorridoEnAnchura(Vertice inicio, boolean porDerecha) {
     Queue<Vertice> queue = new LinkedList<>();
     Set<Vertice> visited = new HashSet<>();
 
@@ -84,7 +87,12 @@ public class Grafo {
       Vertice current = queue.poll();
       System.out.print(" " + current.getNombre());
 
-      for (String key : current.getAdyacencias().keySet()) {
+      List<String> adyacencias = new ArrayList<>(current.getAdyacencias().keySet());
+
+      if (!porDerecha)
+        Collections.reverse(adyacencias);
+      ;
+      for (String key : adyacencias) {
         Vertice neighbor = current.getAdyacencias().get(key).getVertice();
         if (!visited.contains(neighbor)) {
           visited.add(neighbor);
@@ -95,7 +103,7 @@ public class Grafo {
     System.out.println("}");
   }
 
-  public void recorridoEnProfundidad(Vertice inicio) {
+  public void recorridoEnProfundidad(Vertice inicio, boolean porDerecha) {
     Stack<Vertice> stack = new Stack<>();
     Set<Vertice> visited = new HashSet<>();
 
@@ -116,7 +124,12 @@ public class Grafo {
       Vertice current = stack.pop();
       System.out.print(" " + current.getNombre());
 
-      for (String key : current.getAdyacencias().keySet()) {
+      List<String> adyacencias = new ArrayList<>(current.getAdyacencias().keySet());
+
+      if (!porDerecha)
+        Collections.reverse(adyacencias);
+
+      for (String key : adyacencias) {
         Vertice neighbor = current.getAdyacencias().get(key).getVertice();
         if (!visited.contains(neighbor)) {
           visited.add(neighbor);
