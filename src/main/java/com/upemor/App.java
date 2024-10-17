@@ -41,6 +41,7 @@ public class App extends VistaConsola {
             this.recorridoEnProfundidad();
             break;
           case 4:
+            this.caminoMasCorto();
             break;
 
           default:
@@ -202,7 +203,7 @@ public class App extends VistaConsola {
     } while (true);
   }
 
-  public void caminoMasCortoAnchura() {
+  public void caminoMasCorto() {
     String nodoInicial;
     Vertice inicio;
     int opc;
@@ -221,7 +222,6 @@ public class App extends VistaConsola {
           System.out.println("Opción no válida");
           continue;
       }
-
       inicio = grafo.getVertices().get(nodoInicial);
 
       if (inicio == null) {
@@ -229,23 +229,38 @@ public class App extends VistaConsola {
         continue;
       }
 
-      System.out.println("Elije un tipo de recorrido en anchura");
-      System.out.println("0) Por derecha");
-      System.out.println("1) Por izquierda");
-      opc = (int) capturarLong("Ingresa una opción");
+      do {
+        System.out.println("Un día de la semana");
+        opc = (int) capturarLong("Considera 1 como Lunes y 7 como domingo");
 
-      switch (opc) {
-        case 0:
-          grafo.recorrido(inicio, Grafo.ANCHURA, Grafo.DERECHA);
-          break;
-        case 1:
-          grafo.recorrido(inicio, Grafo.ANCHURA, Grafo.IZQUIERDA);
-          break;
+        if (opc < 1 || opc > 7)
+          System.out.println("Número inválido");
 
-        default:
-          System.out.println("Opción no válida");
-          break;
-      }
+      } while (opc < 1 || opc > 7);
+
+      Dias dia = Dias.fromInt(opc);
+
+      do {
+        System.out.println("Elije un tipo de recorrido en anchura");
+        System.out.println("0) Por derecha");
+        System.out.println("1) Por izquierda");
+        opc = (int) capturarLong("Ingresa una opción");
+
+        grafo.mostrarListaAdyacencias(dia);
+        switch (opc) {
+          case 0:
+            grafo.caminoMasCorto(inicio, dia, Grafo.ANCHURA, Grafo.DERECHA);
+            break;
+          case 1:
+            grafo.caminoMasCorto(inicio, dia, Grafo.ANCHURA, Grafo.IZQUIERDA);
+            break;
+
+          default:
+            System.out.println("Opción no válida");
+            break;
+        }
+        grafo.mostrarListaAdyacencias(dia);
+      } while (opc < 0 || opc > 1);
     } while (true);
   }
 }

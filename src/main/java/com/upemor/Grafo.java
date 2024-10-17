@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
-import java.util.Stack;
 
 public class Grafo {
   private Map<String, Vertice> vertices;
@@ -172,6 +171,7 @@ public class Grafo {
     System.out.print("Recorrido en " + tipo + " por " + direccion + ": {");
     pendientes.agregar(destino);
     visitados.add(destino);
+    destino.setEtiqueta(new Etiqueta(null, 0, dia));
 
     while (!pendientes.vacio()) {
       Vertice actual = pendientes.obtener();
@@ -193,6 +193,7 @@ public class Grafo {
         if (nueva.getCosto() < a.getVertice().getEtiqueta().getCosto()) {
           a.getVertice().setEtiqueta(nueva);
         }
+        System.out.println(nueva);
       }
     }
     System.out.println("}");
