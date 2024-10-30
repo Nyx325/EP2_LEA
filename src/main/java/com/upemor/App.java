@@ -16,15 +16,68 @@ public class App extends VistaConsola {
     grafo = new Grafo("Grafo");
   }
 
+  public Dias capturarDia() {
+    int opc;
+    while (true) {
+      System.out.println("Un día de la semana");
+      opc = (int) capturarLong("Considera 1 como Lunes y 7 como domingo");
+
+      if (opc < 1 || opc > 7)
+        System.out.println("Número inválido");
+      else
+        return Dias.fromInt(opc - 1);
+    }
+  }
+
+  public String capturarDireccion() {
+    int opc;
+    while (true) {
+      System.out.println("Elije un tipo de recorrido en anchura");
+      System.out.println("0) Por derecha");
+      System.out.println("1) Por izquierda");
+      opc = (int) capturarLong("Ingresa una opción");
+
+      switch (opc) {
+        case 0:
+          return Grafo.DERECHA;
+        case 1:
+          return Grafo.IZQUIERDA;
+        default:
+          System.out.println("Opción no válida");
+          break;
+      }
+    }
+  }
+
+  public String capturarRecorrido() {
+    int opc;
+    while (true) {
+      System.out.println("Elije un tipo de recorrido");
+      System.out.println("0) Anchura");
+      System.out.println("1) Profundidad");
+      opc = (int) capturarLong("Ingresa una opción");
+
+      switch (opc) {
+        case 0:
+          return Grafo.ANCHURA;
+        case 1:
+          return Grafo.PROFUNDIDAD;
+        default:
+          System.out.println("Opción no válida");
+          break;
+      }
+    }
+  }
+
   public void menu() {
     int opc;
     do {
       System.out.println("Bienvenido");
       System.out.println("0) Salir");
       System.out.println("1) Importar grafo");
-      System.out.println("2) Recorrido en anchura");
-      System.out.println("3) Recorrido en profundidad");
-      System.out.println("4) Camino más corto");
+      System.out.println("2) Recorrer arbol");
+      System.out.println("3) Camino más corto");
+      System.out.println("4) Arbol");
       opc = (int) capturarLong("Ingresa una opción");
 
       try {
@@ -35,15 +88,13 @@ public class App extends VistaConsola {
             this.importarGrafo();
             break;
           case 2:
-            this.recorridoEnAnchura();
+            this.recorrido();
             break;
           case 3:
-            this.recorridoEnProfundidad();
-            break;
-          case 4:
             this.caminoMasCorto();
             break;
-
+          case 4:
+            this.arbol();
           default:
             break;
         }
@@ -109,8 +160,8 @@ public class App extends VistaConsola {
     }
   }
 
-  public void recorridoEnAnchura() {
-    String nodoInicial;
+  public void recorrido() {
+    String nodoInicial, recorrido, direccion;
     Vertice inicio;
     int opc;
     do {
@@ -136,75 +187,15 @@ public class App extends VistaConsola {
         continue;
       }
 
-      System.out.println("Elije un tipo de recorrido en anchura");
-      System.out.println("0) Por derecha");
-      System.out.println("1) Por izquierda");
-      opc = (int) capturarLong("Ingresa una opción");
-
-      switch (opc) {
-        case 0:
-          grafo.recorrido(inicio, Grafo.ANCHURA, Grafo.DERECHA);
-          break;
-        case 1:
-          grafo.recorrido(inicio, Grafo.ANCHURA, Grafo.IZQUIERDA);
-          break;
-
-        default:
-          System.out.println("Opción no válida");
-          break;
-      }
-    } while (true);
-  }
-
-  public void recorridoEnProfundidad() {
-    String nodoInicial;
-    Vertice inicio;
-    int opc;
-    do {
-      System.out.println("0) Volver al menú");
-      System.out.println("1) Ingresar nodo inicial");
-      opc = (int) capturarLong("Ingresa una opción");
-
-      switch (opc) {
-        case 0:
-          return;
-        case 1:
-          nodoInicial = capturarString("Ingresa el nodo inicial");
-          break;
-        default:
-          System.out.println("Opción no válida");
-          continue;
-      }
-
-      inicio = grafo.getVertices().get(nodoInicial);
-
-      if (inicio == null) {
-        System.out.println("No se encontró el nodo " + nodoInicial);
-        continue;
-      }
-
-      System.out.println("Elije un tipo de recorrido en anchura");
-      System.out.println("0) Por derecha");
-      System.out.println("1) Por izquierda");
-      opc = (int) capturarLong("Ingresa una opción");
-
-      switch (opc) {
-        case 0:
-          grafo.recorrido(inicio, Grafo.PROFUNDIDAD, Grafo.DERECHA);
-          break;
-        case 1:
-          grafo.recorrido(inicio, Grafo.PROFUNDIDAD, Grafo.IZQUIERDA);
-          break;
-
-        default:
-          System.out.println("Opción no válida");
-          break;
-      }
+      recorrido = capturarRecorrido();
+      direccion = capturarDireccion();
+      grafo.recorrido(inicio, recorrido, direccion);
     } while (true);
   }
 
   public void caminoMasCorto() {
-    String nodoInicial;
+    Dias dia;
+    String nodoInicial, recorrido, direccion;
     Vertice inicio;
     int opc;
     do {
@@ -229,38 +220,45 @@ public class App extends VistaConsola {
         continue;
       }
 
-      do {
-        System.out.println("Un día de la semana");
-        opc = (int) capturarLong("Considera 1 como Lunes y 7 como domingo");
+      dia = capturarDia();
+      recorrido = capturarRecorrido();
+      direccion = capturarDireccion();
+      grafo.caminoMasCorto(inicio, dia, recorrido, direccion);
+    } while (true);
+  }
 
-        if (opc < 1 || opc > 7)
-          System.out.println("Número inválido");
+  public void arbol() {
+    String nodoInicial, recorrido, direccion;
+    Vertice inicio;
+    Dias dia;
+    int opc;
+    do {
+      System.out.println("0) Volver al menú");
+      System.out.println("1) Ingresar nodo inicial");
+      opc = (int) capturarLong("Ingresa una opción");
 
-      } while (opc < 1 || opc > 7);
+      switch (opc) {
+        case 0:
+          return;
+        case 1:
+          nodoInicial = capturarString("Ingresa el nodo inicial");
+          break;
+        default:
+          System.out.println("Opción no válida");
+          continue;
+      }
+      inicio = grafo.getVertices().get(nodoInicial);
 
-      Dias dia = Dias.fromInt(opc);
+      if (inicio == null) {
+        System.out.println("No se encontró el nodo " + nodoInicial);
+        continue;
+      }
 
-      do {
-        System.out.println("Elije un tipo de recorrido en anchura");
-        System.out.println("0) Por derecha");
-        System.out.println("1) Por izquierda");
-        opc = (int) capturarLong("Ingresa una opción");
-
-        grafo.mostrarListaAdyacencias(dia);
-        switch (opc) {
-          case 0:
-            grafo.caminoMasCorto(inicio, dia, Grafo.ANCHURA, Grafo.DERECHA);
-            break;
-          case 1:
-            grafo.caminoMasCorto(inicio, dia, Grafo.ANCHURA, Grafo.IZQUIERDA);
-            break;
-
-          default:
-            System.out.println("Opción no válida");
-            break;
-        }
-        grafo.mostrarListaAdyacencias(dia);
-      } while (opc < 0 || opc > 1);
+      dia = capturarDia();
+      recorrido = capturarRecorrido();
+      direccion = capturarDireccion();
+      System.out.println("Dia " + dia + " Recorrido " + recorrido + " Direccion " + direccion);
+      grafo.generarArbol(inicio, dia, recorrido, direccion);
     } while (true);
   }
 }

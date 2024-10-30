@@ -4,15 +4,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 
 public class Grafo {
   private Map<String, Vertice> vertices;
   private String nombre;
+
+  public static final String ANCHURA = "anchura";
+  public static final String PROFUNDIDAD = "profundidad";
+  public static final String DERECHA = "derecha";
+  public static final String IZQUIERDA = "izquierda";
 
   public Grafo(String nombre) {
     this.nombre = nombre;
@@ -66,60 +69,9 @@ public class Grafo {
     System.out.println("\n");
   }
 
-  public void generarCaminoMasCorto(Vertice destino, Dias dia) {
-
-    Queue<Vertice> queue = new LinkedList<>();
-    Set<Vertice> visited = new HashSet<>();
-    visited.add(destino);
-    destino.setEtiqueta(new Etiqueta(null, 0, dia));
-    queue.add(destino);
-
-    Vertice actual = null;
-    while (!queue.isEmpty()) {
-      actual = queue.poll();
-
-      for (String key : actual.getAdyacencias().keySet()) {
-        Adyacencia a = actual.getAdyacencias().get(key);
-        Etiqueta nueva = new Etiqueta(actual, actual.getEtiqueta().getCosto() + a.getCosto(dia), dia);
-        if (!visited.contains(a.getVertice())) {
-          visited.add(a.getVertice());
-          a.getVertice().setEtiqueta(nueva);
-          queue.add(a.getVertice());
-        }
-        if (nueva.getCosto() < a.getVertice().getEtiqueta().getCosto()) {
-          a.getVertice().setEtiqueta(nueva);
-        }
-      }
-    }
-  }
-
-  public static final String ANCHURA = "anchura";
-  public static final String PROFUNDIDAD = "profundidad";
-  public static final String DERECHA = "derecha";
-  public static final String IZQUIERDA = "izquierda";
-
   public void recorrido(Vertice inicio, String tipo, String direccion) {
-    if (inicio == null) {
-      System.out.println("Vértice de inicio no encontrado.");
-      return;
-    }
-
-    if (!tipo.equals(ANCHURA) && !tipo.equals(PROFUNDIDAD)) {
-      System.out.println("Error: Tipo inválido");
-      return;
-    }
-
-    if (!direccion.equals(DERECHA) && !direccion.equals(IZQUIERDA)) {
-      System.out.println("Error: Dirección inválido");
-      return;
-    }
-
     Set<Vertice> visitados = new HashSet<>();
-    VerticesPendientes pendientes;
-    if (tipo.equals(ANCHURA))
-      pendientes = new Cola();
-    else
-      pendientes = new Pila();
+    VerticesPendientes pendientes = tipo.equals(ANCHURA) ? new Cola() : new Pila();
 
     System.out.print("Recorrido en " + tipo + " por " + direccion + ": {");
     pendientes.agregar(inicio);
@@ -146,27 +98,8 @@ public class Grafo {
   }
 
   public void caminoMasCorto(Vertice destino, Dias dia, String tipo, String direccion) {
-    if (destino == null) {
-      System.out.println("Vértice de inicio no encontrado.");
-      return;
-    }
-
-    if (!tipo.equals(ANCHURA) && !tipo.equals(PROFUNDIDAD)) {
-      System.out.println("Error: Tipo inválido");
-      return;
-    }
-
-    if (!direccion.equals(DERECHA) && !direccion.equals(IZQUIERDA)) {
-      System.out.println("Error: Dirección inválido");
-      return;
-    }
-
     Set<Vertice> visitados = new HashSet<>();
-    VerticesPendientes pendientes;
-    if (tipo.equals(ANCHURA))
-      pendientes = new Cola();
-    else
-      pendientes = new Pila();
+    VerticesPendientes pendientes = tipo.equals(ANCHURA) ? new Cola() : new Pila();
 
     System.out.print("Recorrido en " + tipo + " por " + direccion + ": {");
     pendientes.agregar(destino);
@@ -197,5 +130,39 @@ public class Grafo {
       }
     }
     System.out.println("}");
+  }
+
+  public Grafo generarArbol(Vertice inicio, Dias dia, String tipo, String direccion) {
+    this.caminoMasCorto(inicio, dia, tipo, direccion);
+
+    Grafo arbol = new Grafo("Arbol iniciando por " + inicio.getNombre());
+
+    for (String key : this.getVertices().keySet()) {
+      Vertice v = this.getVertices().get(key);
+      Vertice vArbol = new Vertice(v.getNombre());
+      vArbol.setEtiqueta(v.getEtiqueta());
+      arbol.add(vArbol);
+    }
+
+    for (String key : this.getVertices().keySet()) {
+      Vertice nodoGrafo = this.getVertices().get(key);
+      Vertice hijo = arbol.getVertices().get(key);
+
+      Etiqueta etiqueta = nodoGrafo.getEtiqueta();
+      if (etiqueta.getVertice() == null)
+        continue;
+
+      Vertice padre = arbol.getVertices().get(etiqueta.getVertice().getNombre());
+      Vertice padreGrafo = this.getVertices().get(etiqueta.getVertice().getNombre());
+
+      Adyacencia adyArbol = new Adyacencia(hijo);
+
+      adyArbol.setCosto(padreGrafo.getAdyacencias().get(hijo.getNombre()).getCosto(dia), dia);
+      padre.addAdyacencia(adyArbol);
+    }
+
+    System.out.println("Adyacencias " + arbol.getNombre());
+    arbol.mostrarListaAdyacencias(dia);
+    return arbol;
   }
 }
