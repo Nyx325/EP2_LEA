@@ -224,6 +224,7 @@ public class App extends VistaConsola {
       recorrido = capturarRecorrido();
       direccion = capturarDireccion();
       grafo.caminoMasCorto(inicio, dia, recorrido, direccion);
+      grafo.mostrarListaAdyacencias(dia);
     } while (true);
   }
 
